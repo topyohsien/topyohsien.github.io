@@ -1,53 +1,46 @@
-:root {
-    --primary-color: #2c3e50;
-    --accent-color: #2980b9;
-    --success-color: #27ae60;
-    --warning-color: #e67e22;
-    --danger-color: #e74c3c;
-    --bg-color: #f4f7f6;
-}
+body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: #f7f7f7; color: #333; }
+header { background: #2c3e50; color: #fff; padding: 1rem; text-align: center; }
+nav { background: #34495e; color: #fff; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+nav a { color: #fff; text-decoration: none; border: 1px solid #fff; padding: 2px 8px; border-radius: 4px; }
 
-body { font-family: "Segoe UI", "Microsoft JhengHei", system-ui, sans-serif; margin: 0; background: var(--bg-color); color: #333; }
+.container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 2rem; }
+.search-bar { display: flex; align-items: center; margin-bottom: 1rem; }
+.search-bar input { flex: 1; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+.search-bar button { margin-left: 0.5rem; padding: 0.5rem 1rem; background: #2980b9; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
 
-/* Header & Nav */
-header { background: var(--primary-color); color: white; padding: 1rem; text-align: center; }
-nav { background: #34495e; color: white; padding: 0.8rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
-nav a { color: white; text-decoration: none; border: 1px solid white; padding: 4px 12px; border-radius: 4px; font-size: 0.9em; }
+.calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.calendar-controls button { background: #27ae60; color: #fff; border: none; border-radius: 4px; padding: 0.3rem 0.8rem; cursor: pointer; }
 
-/* Container */
-.container { max-width: 950px; margin: 1.5rem auto; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 1.5rem; }
+.calendar { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.calendar th, .calendar td { width: 14.28%; height: 70px; text-align: center; vertical-align: top; border: 1px solid #e1e1e1; position: relative; font-size: 0.95rem; background: #fff; }
+.calendar th { background: #ecf0f1; font-weight: bold; height: auto; padding: 5px 0; }
+.sat { background: #d6eaf8 !important; }
+.sun { background: #f9e79f !important; }
+.holiday { background: #f5b7b1 !important; }
+.highlight { border: 2px solid #e67e22 !important; box-shadow: 0 0 8px #e67e22; }
+.duty { font-size: 0.85em; color: #2980b9; margin-top: 0.2em; display: block; font-weight: bold; }
+.today { background: #abebc6 !important; font-weight: bold; }
+.edit-duty { font-size: 0.85em; color: #e67e22; cursor: pointer; text-decoration: underline; margin-left: 5px; }
 
-/* Search & Controls */
-.search-bar { display: flex; margin-bottom: 1.5rem; }
-.search-bar input { flex: 1; padding: 0.8rem; border: 1px solid #ddd; border-radius: 6px 0 0 6px; outline: none; }
-.search-bar button { background: var(--accent-color); color: white; border: none; padding: 0 1.5rem; border-radius: 0 6px 6px 0; cursor: pointer; }
+.note { margin-top: 2rem; font-size: 0.95em; color: #666; background: #f9f9f9; border-radius: 6px; padding: 1rem; border: 1px solid #eee; }
 
-.calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: bold; }
-.calendar-controls button { background: var(--success-color); color: white; border: none; padding: 6px 15px; border-radius: 4px; cursor: pointer; }
+/* 週排班表格 */
+.weekly-duty-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; position: relative; }
+.weekly-duty-table th { background: #2c3e50; color: #fff; padding: 0.7em 0.2em; border: 1px solid #e1e1e1; }
+.weekly-duty-table td { border: 1px solid #e1e1e1; padding: 0.7em 0.2em; text-align: center; background: #fff; }
 
-/* Calendar Table */
-.calendar { width: 100%; border-collapse: collapse; table-layout: fixed; }
-.calendar th { background: #ecf0f1; padding: 10px; border: 1px solid #ddd; }
-.calendar td { border: 1px solid #eee; height: 80px; vertical-align: top; padding: 5px; position: relative; }
-.sat { background: #ebf5fb; }
-.sun { background: #fef9e7; }
-.holiday { background: #fdedec; }
-.today { background: #e8f8f5 !important; border: 2px solid var(--success-color) !important; }
-.highlight { border: 2px solid var(--warning-color) !important; box-shadow: inset 0 0 5px var(--warning-color); }
-.duty { display: block; margin-top: 10px; color: var(--accent-color); font-weight: bold; font-size: 0.9em; text-align: center; }
+/* 彈窗 */
+.modal-overlay { position: fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:1000; display:flex; align-items:center; justify-content:center; }
+.modal-content { background:#fff; padding:2rem; border-radius:12px; max-width:420px; box-shadow:0 2px 12px #333; }
+.member-list-table { width:100%; border-collapse:collapse; margin: 1.5em 0; }
+.member-list-table th { background:#34495e; color:#fff; padding:0.7em; }
+.member-list-table td { padding:0.7em; border-bottom:1px solid #eee; text-align:center; }
+.btn-close { display:block; margin:0 auto; padding:0.5em 2em; background:#2980b9; color:#fff; border:none; border-radius:6px; cursor:pointer; }
 
-/* Weekly Table */
-.weekly-duty-table { width: 100%; border-collapse: collapse; margin-top: 2rem; position: relative;}
-.weekly-duty-table th { background: var(--primary-color); color: white; padding: 10px; font-size: 0.9em; }
-.weekly-duty-table td { border: 1px solid #eee; padding: 10px 5px; text-align: center; font-size: 0.85em; }
-
-/* Modals */
-.modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; z-index:1000; }
-.modal-content { background:white; padding:2rem; border-radius:12px; width:90%; max-width:400px; }
-.member-list-table { width:100%; border-collapse:collapse; margin: 15px 0; }
-.member-list-table th, .member-list-table td { border-bottom: 1px solid #eee; padding: 10px; text-align: center; }
+.notes-icon { position: absolute; right: 0.5em; top: -2.2em; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+.notes-icon svg { width: 24px; height: 24px; fill: #2c3e50; }
 
 @media (max-width: 600px) {
-    .calendar td { height: 50px; font-size: 0.75em; }
-    .container { margin: 0.5rem; padding: 1rem; }
+    .calendar th, .calendar td { height: 45px; font-size: 0.8rem; }
+    .weekly-duty-table td { font-size: 0.8rem; }
 }
