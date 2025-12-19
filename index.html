@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EMS 排班助手</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>EMS 排班助手</h1>
+    </header>
+
+    <nav>
+        <div>
+            <a href="#" id="memberManageBtn">成員管理</a>
+        </div>
+        <div>
+            <span id="dutyInfo">載入中...</span>
+            <span class="edit-duty" onclick="editDutyDate()">調整</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="輸入人名查詢排班日期...">
+            <button onclick="searchDuty()">查詢</button>
+        </div>
+
+        <div class="calendar-controls">
+            <button onclick="prevMonth()">上一月</button>
+            <span id="monthLabel"></span>
+            <button onclick="nextMonth()">下一月</button>
+        </div>
+
+        <table class="calendar" id="calendarTable"></table>
+        
+        <div id="searchResult"></div>
+
+        <div class="note">
+            <b>💡 使用說明：</b><br>
+            1. 本系統會自動根據週六排班推算週日與國定假日。<br>
+            2. <b>補班日：</b> 請手動於 <code>script.js</code> 的假日清單中移除該日期。<br>
+            3. <b>人員變更：</b> 搜尋代碼中的 <code>memberPeriods</code> 即可修改成員順序。
+        </div>
+
+        <div id="weeklyDutyTable"></div>
+    </div>
+
+    <div id="editDutyModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <h3>調整排班起始點</h3>
+            <div class="form-group">
+                <label>基準日期：</label>
+                <input type="date" id="editDutyDate">
+            </div>
+            <div class="form-group">
+                <label>當日值班人：</label>
+                <select id="editDutyPerson"></select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-save" onclick="saveDutyDate()">儲存變更</button>
+                <button class="btn-cancel" onclick="closeEditDutyModal()">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="memberModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content member-modal">
+            <h2>EMS 成員通訊錄</h2>
+            <table class="member-list-table">
+                <thead>
+                    <tr>
+                        <th>序號</th>
+                        <th>姓名</th>
+                        <th>分機/電話</th>
+                    </tr>
+                </thead>
+                <tbody id="memberListBody"></tbody>
+            </table>
+            <button class="btn-close" onclick="closeMemberModal()">關閉視窗</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
