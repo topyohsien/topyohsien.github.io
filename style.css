@@ -1,0 +1,50 @@
+/* 全域設定 */
+body { font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif; margin: 0; background: #f7f7f7; color: #333; }
+header { background: #2c3e50; color: #fff; padding: 1rem; text-align: center; }
+nav { background: #34495e; color: #fff; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+nav a { color: #fff; text-decoration: none; margin-right: 1rem; }
+
+.container { max-width: 900px; margin: 2rem auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 2rem; }
+
+/* 搜尋與控制 */
+.search-bar { display: flex; align-items: center; margin-bottom: 1rem; }
+.search-bar input { flex: 1; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; }
+.search-bar button { margin-left: 0.5rem; padding: 0.5rem 1rem; background: #2980b9; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+
+.calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.calendar-controls button { background: #27ae60; color: #fff; border: none; border-radius: 4px; padding: 0.3rem 0.8rem; cursor: pointer; }
+
+/* 月曆樣式 */
+.calendar { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.calendar th, .calendar td { width: 14.28%; height: 70px; text-align: center; vertical-align: top; border: 1px solid #e1e1e1; font-size: 0.95rem; }
+.calendar th { background: #ecf0f1; padding: 10px 0; }
+.sat { background: #d6eaf8 !important; }
+.sun { background: #f9e79f !important; }
+.holiday { background: #f5b7b1 !important; }
+.today { background: #abebc6 !important; font-weight: bold; }
+.highlight { border: 2px solid #e67e22 !important; box-shadow: 0 0 8px #e67e22; }
+.duty { font-size: 0.85em; color: #2980b9; margin-top: 5px; display: block; }
+
+/* 週排班表 */
+.weekly-duty-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; position: relative; }
+.weekly-duty-table th { background: #2c3e50; color: #fff; padding: 0.7em; }
+.weekly-duty-table td { border: 1px solid #e1e1e1; padding: 0.7em; text-align: center; }
+
+/* 彈窗樣式 */
+.modal { display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:1000; }
+.modal-content { background:#fff; padding:2rem; border-radius:12px; max-width:400px; margin:10vh auto; box-shadow:0 4px 15px rgba(0,0,0,0.3); }
+.modal-content.wide { max-width: 450px; }
+.member-list { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+.member-list th { background: #34495e; color: #fff; padding: 8px; }
+.member-list td { padding: 8px; border-bottom: 1px solid #eee; text-align: center; }
+.btn-close { display:block; margin: 0 auto; padding: 0.5rem 2rem; background: #2980b9; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+
+/* Notes 圖示 */
+.notes-icon { position: absolute; right: 0; top: -40px; cursor: pointer; }
+.notes-icon svg { width: 32px; height: 32px; fill: #2c3e50; }
+.notes-icon:hover svg { fill: #e67e22; }
+
+@media (max-width: 600px) {
+    .calendar th, .calendar td { height: 50px; font-size: 0.75rem; }
+    .container { padding: 1rem; }
+}
