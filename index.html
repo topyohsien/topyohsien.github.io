@@ -3,275 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EMS排班助手</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            background: #f7f7f7;
-            color: #333;
-        }
-        
-        header {
-            background: #2c3e50;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-        }
-        
-        nav {
-            background: #34495e;
-            color: #fff;
-            padding: 0.5rem 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin-right: 1rem;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 2rem auto;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            padding: 2rem;
-        }
-        
-        .search-bar {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .search-bar input {
-            flex: 1;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        
-        .search-bar button {
-            margin-left: 0.5rem;
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            background: #2980b9;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .calendar-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .calendar-controls button {
-            background: #27ae60;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 0.3rem 0.8rem;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        
-        .calendar {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-        }
-        
-        .calendar th, .calendar td {
-            width: 14.28%;
-            height: 70px;
-            text-align: center;
-            vertical-align: top;
-            border: 1px solid #e1e1e1;
-            position: relative;
-            font-size: 0.95rem;
-            background: #fff;
-        }
-        
-        .calendar th {
-            background: #ecf0f1;
-            font-weight: bold;
-        }
-        
-        .sat {
-            background: #d6eaf8 !important;
-        }
-        
-        .sun {
-            background: #f9e79f !important;
-        }
-        
-        .holiday {
-            background: #f5b7b1 !important;
-        }
-        
-        .highlight {
-            border: 2px solid #e67e22 !important;
-            box-shadow: 0 0 8px #e67e22;
-        }
-        
-        .duty {
-            font-size: 0.85em;
-            color: #2980b9;
-            margin-top: 0.2em;
-            display: block;
-        }
-        
-        .today {
-            background: #abebc6 !important;
-            font-weight: bold;
-        }
-        
-        .edit-duty {
-            margin-top: 0.5em;
-            font-size: 0.85em;
-            color: #e67e22;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        
-        .note {
-            margin-top: 2rem;
-            font-size: 0.95em;
-            color: #666;
-            background: #f9f9f9;
-            border-radius: 6px;
-            padding: 1rem;
-            border: 1px solid #eee;
-        }
-        
-        /* 新增：橫式週排班表格樣式 */
-        .weekly-duty-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1.5rem;
-            font-size: 1rem;
-            font-family: 'Segoe UI', Arial, sans-serif;
-        }
-        
-        .weekly-duty-table th {
-            background: #2c3e50;
-            color: #fff;
-            font-weight: bold;
-            padding: 0.7em 0.2em;
-            border: 1px solid #e1e1e1;
-            font-size: 1.05em;
-        }
-        
-        .weekly-duty-table td {
-            border: 1px solid #e1e1e1;
-            padding: 0.7em 0.2em;
-            text-align: center;
-            background: #fff;
-            color: #333;
-        }
-        
-        .weekly-duty-table .sat {
-            background: #d6eaf8;
-        }
-        
-        .weekly-duty-table .sun {
-            background: #f9e79f;
-        }
-        
-        .weekly-duty-table .holiday {
-            background: #f5b7b1;
-        }
-        
-        .weekly-duty-table .today {
-            background: #abebc6;
-            font-weight: bold;
-        }
-        
-        /* 新增：Notes圖示樣式 */
-        .notes-icon {
-            position: absolute;
-            right: 0.5em;
-            top: -2.2em;
-            z-index: 10;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s;
-            border-radius: 50%;
-        }
-        
-        .notes-icon:hover {
-            background: #e1e1e1;
-        }
-        
-        .notes-icon svg {
-            width: 24px;
-            height: 24px;
-            fill: #2c3e50;
-            transition: fill 0.2s;
-        }
-        
-        .notes-icon:hover svg {
-            fill: #e67e22;
-        }
-        
-        /* 讓週表區塊相對定位，方便放icon */
-        #weeklyDutyTable {
-            position: relative;
-        }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 0.5rem;
-            }
-            .calendar th, .calendar td {
-                height: 40px;
-                font-size: 0.8rem;
-            }
-            .search-bar input, .search-bar button {
-                font-size: 0.9rem;
-            }
-            .note {
-                font-size: 0.85em;
-                padding: 0.5rem;
-            }
-            .weekly-duty-table th, .weekly-duty-table td {
-                font-size: 0.85em;
-                padding: 0.4em 0.1em;
-            }
-            .notes-icon {
-                width: 28px;
-                height: 28px;
-                top: -2em;
-            }
-            .notes-icon svg {
-                width: 20px;
-                height: 20px;
-            }
-        }
-    </style>
+    <title>EMS 排班助手</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>EMS排班助手</h1>
+        <h1>EMS 排班助手</h1>
     </header>
-    
+
     <nav>
         <div>
-            <!-- 已移除首頁、排班月曆，只剩成員管理 -->
             <a href="#" id="memberManageBtn">成員管理</a>
         </div>
         <div>
@@ -279,251 +20,71 @@
             <span class="edit-duty" onclick="editDutyDate()">調整</span>
         </div>
     </nav>
-    
+
     <div class="container">
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="輸入人名查詢排班日期...">
             <button onclick="searchDuty()">查詢</button>
         </div>
-        
+
         <div class="calendar-controls">
             <button onclick="prevMonth()">上一月</button>
             <span id="monthLabel"></span>
             <button onclick="nextMonth()">下一月</button>
         </div>
-        
+
         <table class="calendar" id="calendarTable"></table>
-        <div id="searchResult"></div>
         
-        <!-- 備註區塊 -->
+        <div id="searchResult"></div>
+
         <div class="note">
             <b>備註：</b><br>
-            1. 只抓的到國定假日，抓不到補班日，所以2026以後的補班日要手動填『台灣國定假日』<br>
-            2. 年假天數非固定，要等行政院公告後再手動修改『// 春節連假』<br>
-            3. 排班人員有變更時，搜尋『排班人員區間設定』可直接修改
+            1. 只抓的到國定假日，補班日需手動填寫。<br>
+            2. 年假天數非固定，需依行政院公告手動修改。<br>
+            3. 成員變更請修改 <code>memberPeriods</code> 設定。
         </div>
-        
-        <!-- 新增：橫式週排班表格 -->
+
         <div id="weeklyDutyTable"></div>
     </div>
-    
-    <!-- 彈窗調整排班起始日 -->
-    <div id="editDutyModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:999;">
-        <div style="background:#fff;padding:2rem;border-radius:8px;max-width:350px;margin:10vh auto;box-shadow:0 2px 8px #333;">
+
+    <div id="editDutyModal" class="modal">
+        <div class="modal-content">
             <h3>調整排班起始日</h3>
             <label>日期：<input type="date" id="editDutyDate"></label><br><br>
-            <label>值班人員：
-                <select id="editDutyPerson"></select>
-            </label><br><br>
-            <button onclick="saveDutyDate()">儲存</button>
-            <button onclick="closeEditDutyModal()">取消</button>
+            <label>值班人員：<select id="editDutyPerson"></select></label><br><br>
+            <div class="modal-footer">
+                <button onclick="saveDutyDate()">儲存</button>
+                <button onclick="closeEditDutyModal()">取消</button>
+            </div>
         </div>
     </div>
-    
-    <!-- 新增：成員管理彈窗 -->
-    <div id="memberModal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);z-index:1000;">
-        <div style="background:#fff;padding:2rem 2.5rem;border-radius:12px;max-width:420px;margin:10vh auto;box-shadow:0 2px 12px #333;position:relative;">
-            <h2 style="margin-top:0;text-align:center;color:#2c3e50;">成員排班表</h2>
-            <table style="width:100%;border-collapse:collapse;margin:1.5em 0;">
+
+    <div id="memberModal" class="modal">
+        <div class="modal-content wide">
+            <h2 style="text-align:center;color:#2c3e50;">成員排班表</h2>
+            <table class="member-list">
                 <thead>
-                    <tr style="background:#34495e;color:#fff;">
-                        <th style="padding:0.7em;border-radius:6px 0 0 0;">順序</th>
-                        <th style="padding:0.7em;">人名</th>
-                        <th style="padding:0.7em;border-radius:0 6px 0 0;">電話</th>
+                    <tr>
+                        <th>順序</th>
+                        <th>人名</th>
+                        <th>電話</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr style="background:#f7f7f7;">
-                        <td>No.1</td><td>張智寬</td><td>8625050</td>
-                    </tr>
-                    <tr>
-                        <td>No.2</td><td>陳建翰</td><td>8623821</td>
-                    </tr>
-                    <tr style="background:#f7f7f7;">
-                        <td>No.3</td><td>王靖凱</td><td>8623820</td>
-                    </tr>
-                    <tr>
-                        <td>No.4</td><td>郭宗宜</td><td>8623807</td>
-                    </tr>
-                    <tr style="background:#f7f7f7;">
-                        <td>No.5</td><td>蔡侑憲</td><td>8623804</td>
-                    </tr>
-                    <tr>
-                        <td>No.6</td><td>陳桂豪</td><td>8625056</td>
-                    </tr>
-                    <tr style="background:#f7f7f7;">
-                        <td>No.7</td><td>鄭天翔</td><td>8623819</td>
-                    </tr>
-                    <tr>
-                        <td>No.8</td><td>陳繹全</td><td>8623812</td>
-                    </tr>
+                <tbody id="memberTableBody">
+                    <tr><td>No.1</td><td>張智寬</td><td>8625050</td></tr>
+                    <tr><td>No.2</td><td>陳建翰</td><td>8623821</td></tr>
+                    <tr><td>No.3</td><td>王靖凱</td><td>8623820</td></tr>
+                    <tr><td>No.4</td><td>郭宗宜</td><td>8623807</td></tr>
+                    <tr><td>No.5</td><td>蔡侑憲</td><td>8623804</td></tr>
+                    <tr><td>No.6</td><td>陳桂豪</td><td>8625056</td></tr>
+                    <tr><td>No.7</td><td>鄭天翔</td><td>8623819</td></tr>
+                    <tr><td>No.8</td><td>陳繹全</td><td>8623812</td></tr>
                 </tbody>
             </table>
-            <button onclick="closeMemberModal()" style="display:block;margin:0 auto 0.5em auto;padding:0.5em 2em;background:#2980b9;color:#fff;border:none;border-radius:6px;font-size:1.1em;cursor:pointer;">關閉</button>
+            <button class="btn-close" onclick="closeMemberModal()">關閉</button>
         </div>
     </div>
-    
-    <script>
-        // ====== 1. 排班人員區間設定（可直接修改） ======
-        const memberPeriods = [
-            {
-                start: '2025-12-18',
-                end: '2026-02-28',
-                members: ['智寬', '建翰', '靖凱', '宗宜', '侑憲', '桂豪', '天翔', '繹全']
-            },
-            {
-                start: '2026-03-01',
-                end: '2026-12-31',
-                members: ['智寬', '建翰', '靖凱', '宗宜', '侑憲', '桂豪', '天翔', '繹全']
-            }
-        ];
-        
-        // 人名與電話對照
-        const memberPhones = {
-            '靖凱': '8623820',
-            '侑憲': '8623804',
-            '建翰': '8623821',
-            '智寬': '8625050',
-            '宗宜': '8623807',
-            '桂豪': '8625056',
-            '天翔': '8623819',
-            '繹全': '8623812'
-        };
-        
-        // ===== 新增：人名對全名 =====
-        const memberFullNames = {
-            '靖凱': '王靖凱',
-            '侑憲': '蔡侑憲',
-            '建翰': '陳建翰',
-            '智寬': '張智寬',
-            '宗宜': '郭宗宜',
-            '桂豪': '陳桂豪',
-            '天翔': '鄭天翔',
-            '繹全': '陳繹全'
-        };
-        
-        // 春節連假值班人員設定（可直接修改）
-        const springFestivalDuty = {
-            '2026-02-16': '抽籤',
-            '2026-02-17': '抽籤',
-            '2026-02-18': '抽籤',
-            '2026-02-19': '抽籤',
-            '2026-02-20': '抽籤',
-        };
-        
-        // 依日期取得成員名單
-        function getMembersByDate(dateStr) {
-            for (let period of memberPeriods) {
-                if (dateStr >= period.start && dateStr <= period.end) {
-                    return period.members;
-                }
-            }
-            return memberPeriods[0].members;
-        }
-        
-        // ====== 2. 其他原有設定 ======
-        let dutyStartDate = '2026-01-17';
-        let dutyStartPerson = '侑憲';
-        
-        // 台灣國定假日
-        const holidays = [
-            { date: '2025-01-01', name: '元旦' },
-            { date: '2025-02-28', name: '和平紀念日' },
-            { date: '2025-04-04', name: '兒童節' },
-            { date: '2025-04-05', name: '清明節' },
-            { date: '2025-05-01', name: '勞動節' },
-            { date: '2025-05-31', name: '端午節' },
-            { date: '2025-09-28', name: '教師節' },
-            { date: '2025-10-06', name: '中秋節' },
-            { date: '2025-10-10', name: '國慶日' },
-            { date: '2025-10-25', name: '光復節' },
-            { date: '2025-12-25', name: '行憲紀念日' },
-            { date: '2026-01-01', name: '元旦' },
-            { date: '2026-02-27', name: '補假' },
-            { date: '2026-02-28', name: '和平紀念日' },
-            { date: '2026-04-03', name: '補假' },
-            { date: '2026-04-04', name: '兒童節' },
-            { date: '2026-04-05', name: '清明節' },
-            { date: '2026-04-06', name: '補假' },
-            { date: '2026-05-01', name: '勞動節' },
-            { date: '2026-06-19', name: '端午節' },
-            { date: '2026-09-25', name: '中秋節' },
-            { date: '2026-09-28', name: '教師節' },
-            { date: '2026-10-09', name: '補假' },
-            { date: '2026-10-10', name: '國慶日' },
-            { date: '2026-10-25', name: '光復節' },
-            { date: '2026-10-26', name: '補假' },
-            { date: '2026-12-25', name: '行憲紀念日' },
-            { date: '2030-01-01', name: '元旦' },
-            { date: '2030-02-28', name: '和平紀念日' },
-            { date: '2030-04-04', name: '兒童節' },
-            { date: '2030-04-05', name: '清明節' },
-            { date: '2030-05-01', name: '勞動節' },
-            { date: '2030-06-06', name: '端午節' },
-            { date: '2030-09-28', name: '教師節' },
-            { date: '2030-09-12', name: '中秋節' },
-            { date: '2030-10-10', name: '國慶日' },
-            { date: '2030-10-25', name: '光復節' },
-            { date: '2030-12-25', name: '行憲紀念日' },
-        ];
-        
-        // 春節連假 (2026/2/14週五
-        let dates = [];
-        for (let i = 0; i < 7; i++) {
-            let d = new Date(sat);
-            d.setDate(sat.getDate() + i);
-            dates.push(new Date(d));
-        }
-        
-        // 取得週六排班人員
-        let satStr = formatDate(dates[0]);
-        let satPerson = getDutyPerson(satStr);
-        
-        // 產生表格
-        let days = ['週六','週日','週一','週二','週三','週四','週五'];
-        let html = '<table class="weekly-duty-table"><thead><tr>';
-        days.forEach(day => html += `<th>${day}</th>`);
-        html += '</tr></thead><tbody><tr>';
-        
-        dates.forEach((d, idx) => {
-            let dateStr = formatDate(d);
-            let person = getDutyPerson(dateStr);
-            if (!person) person = satPerson; // 若無排班人員則填週六人名
-            
-            let fullName = memberFullNames[person] || person; // 這裡顯示全名
-            let phone = memberPhones[person] || '';
-            
-            let type = '';
-            if (d.getDay() === 6) type = 'sat';
-            else if (d.getDay() === 0) type = 'sun';
-            if (isHoliday(dateStr)) type = 'holiday';
-            if (formatDate(new Date()) === dateStr) type += ' today';
-            
-            html += `<td class="${type}"><div>${dateStr}</div><div>${fullName}</div><div style="font-size:0.95em;color:#2980b9;">${phone}</div></td>`;
-        });
-        
-        html += '</tr></tbody></table>';
-        
-        // 新增：Notes圖示按鈕
-        html += `
-            <div class="notes-icon" title="Notes" onclick="window.open('Notes://F12AD16/48257DB0002E2D30/EF9C1CE35692F71348256C5C0034F18C/8B6DF6C88DEC5705482580EB00219DD1')">
-                <svg viewBox="0 0 24 24">
-                    <path d="M4 4h16v16H4V4zm2 2v12h12V6H6zm2 2h8v2H8V8zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/>
-                </svg>
-            </div>
-        `;
-        
-        document.getElementById('weeklyDutyTable').innerHTML = html;
-        }
-        
-        // ===== 新增：成員管理彈窗開關 =====
-        function openMemberModal() {
-            document.getElementById('memberModal').style.display = 'block';
-        }
-        
-        function closeMemberModal() {
-            document.getElementById('memberModal').style.display = 'none';
-        }
-    </script>
+
+    <script src="script.js"></script>
 </body>
 </html>
