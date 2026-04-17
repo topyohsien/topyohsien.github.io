@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多功能倒數計時器</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f9;
+            --card-bg: #ffffff;
+            --primary-color: #007aff;
+            --danger-color: #ff3b30;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 { margin-bottom: 20px; color: #555; }
+
+        .timer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .timer-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .timer-label {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #777;
+            border: none;
+            text-align: center;
+            width: 100%;
+        }
+
+        .display {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 5px 0;
+            color: var(--primary-color);
+        }
+
+        .inputs {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .inputs input {
+            width: 45px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .controls {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        button {
+            flex: 1;
+            padding: 8px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-start { background-color: var(--primary-color); color: white; }
+        .btn-reset { background-color: #8e8e93; color: white; }
+        
+        button:active { opacity: 0.7; }
+        
+        .timer-finished {
+            background-color: #ffebeb;
+            animation: flash 1s infinite;
+        }
+
+        @keyframes flash {
+            50% { background-color: var(--danger-color); }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>倒數計時助手</h2>
+
+    <div class="timer-container" id="timerGrid">
+        </div>
+
+    <script>
+        const timerGrid = document.getElementById('timerGrid');
+        const timerCount = 6;
+        let intervals = Array(timerCount).fill(null);
+        let remainingTimes = Array(timerCount).fill(0);
+
+        // 初始化 6 個計時器
+        for (let i = 0; i < timerCount; i++) {
+            const card = document.createElement('div');
+            card.className = 'timer-card';
+            card.id = `card-${i}`;
+            card.innerHTML = `
+                <input type="text" class="timer-label" value="計時器 ${i + 1}">
+                <div class="display" id="display-${i}">00:00</div>
+                <div class="inputs" id="inputs-${i}">
+                    <input type="number" id="min-${i}" placeholder="分" min="0" max="99">
+                    <input type="number" id="sec-${i}" placeholder="秒" min="0" max="59">
+                </div>
+                <div class="controls">
+                    <button class="btn-start" id="btn-${i}" onclick="toggleTimer(${i})">開始</button>
+                    <button class="btn-reset" onclick="resetTimer(${i})">重設</button>
+                </div>
+            `;
+            timerGrid.appendChild(card);
+        }
+
+        function updateDisplay(index) {
+            const m = Math.floor(remainingTimes[index] / 60);
+            const s = remainingTimes[index] % 60;
+            document.getElementById(`display-${index}`).textContent = 
+                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function toggleTimer(index) {
+            const btn = document.getElementById(`btn-${index}`);
+            const card = document.getElementById(`card-${index}`);
+            
+            if (intervals[index]) {
+                // 暫停
+                clearInterval(intervals[index]);
+                intervals[index] = null;
+                btn.textContent = '繼續';
+                btn.style.backgroundColor = '#34c759';
+            } else {
+                // 如果是第一次開始，抓取輸入數值
+                if (remainingTimes[index] === 0) {
+                    const mins = parseInt(document.getElementById(`min-${index}`).value) || 0;
+                    const secs = parseInt(document.getElementById(`sec-${index}`).value) || 0;
+                    remainingTimes[index] = mins * 60 + secs;
+                }
+
+                if (remainingTimes[index] <= 0) return;
+
+                // 開始倒數
+                document.getElementById(`inputs-${index}`).style.visibility = 'hidden';
+                btn.textContent = '暫停';
+                btn.style.backgroundColor = '#ff9500';
+                card.classList.remove('timer-finished');
+
+                intervals[index] = setInterval(() => {
+                    remainingTimes[index]--;
+                    updateDisplay(index);
+
+                    if (remainingTimes[index] <= 0) {
+                        clearInterval(intervals[index]);
+                        intervals[index] = null;
+                        btn.textContent = '完成';
+                        btn.disabled = true;
+                        card.classList.add('timer-finished');
+                        // 手機震動提示 (如果瀏覽器支援)
+                        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+                    }
+                }, 1000);
+            }
+        }
+
+        function resetTimer(index) {
+            clearInterval(intervals[index]);
+            intervals[index] = null;
+            remainingTimes[index] = 0;
+            
+            const btn = document.getElementById(`btn-${index}`);
+            btn.textContent = '開始';
+            btn.disabled = false;
+            btn.style.backgroundColor = 'var(--primary-color)';
+            
+            document.getElementById(`display-${index}`).textContent = '00:00';
+            document.getElementById(`inputs-${index}`).style.visibility = 'visible';
+            document.getElementById(`card-${index}`).classList.remove('timer-finished');
+        }
+    </script>
+</body>
+</html>
